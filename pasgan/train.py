@@ -332,17 +332,52 @@ def main():
     # Create dataset and dataloader
     print("Creating dataset...")
     
-    # Use common patterns and synthetic data for initial training
-    initial_passwords = COMMON_PATTERNS.copy()
-    initial_passwords = augment_passwords(initial_passwords, augment_factor=5)
+    # Check for real password datasets (RockYou, etc.)
+    dataset_paths = [
+        'datasets/rockyou.txt',
+        'datasets/rockyou-filtered.txt',
+        '../datasets/rockyou.txt',
+        'rockyou.txt',
+        'passwords.txt',
+    ]
     
-    dataloader, dataset = create_dataloader(
-        passwords=initial_passwords,
-        batch_size=config['batch_size'],
-        seq_len=config['seq_len'],
-        min_len=config['min_password_len'],
-        shuffle=True
-    )
+    password_file = None
+    for path in dataset_paths:
+        if os.path.exists(path):
+            password_file = path
+            print(f"✓ Found password dataset: {path}")
+            break
+    
+    if password_file:
+        # Use real password dataset (RECOMMENDED)
+        print(f"Loading passwords from {password_file}...")
+        print("This will provide much better training data!")
+        dataloader, dataset = create_dataloader(
+            password_file=password_file,
+            batch_size=config['batch_size'],
+            seq_len=config['seq_len'],
+            min_len=config['min_password_len'],
+            shuffle=True
+        )
+    else:
+        # Fallback to synthetic data
+        print("⚠ No password dataset found. Using synthetic data.")
+        print("For better results, download RockYou dataset:")
+        print("  1. Download from: https://github.com/brannondorsey/naive-hashcat/releases/download/data/rockyou.txt")
+        print("  2. Place at: datasets/rockyou.txt")
+        print("  3. Re-run training")
+        print()
+        
+        initial_passwords = COMMON_PATTERNS.copy()
+        initial_passwords = augment_passwords(initial_passwords, augment_factor=5)
+        
+        dataloader, dataset = create_dataloader(
+            passwords=initial_passwords,
+            batch_size=config['batch_size'],
+            seq_len=config['seq_len'],
+            min_len=config['min_password_len'],
+            shuffle=True
+        )
     
     # Create trainer
     trainer = PassGANTrainer(config)

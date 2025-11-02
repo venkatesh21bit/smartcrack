@@ -1,0 +1,97 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual Environment
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# PyTorch
+*.pth
+*.pt
+*.ckpt
+
+# Datasets (Large Files)
+datasets/
+*.txt
+!requirements.txt
+!README.txt
+!pasgan/ARCHITECTURE.txt
+!pasgan/QUICK_REFERENCE.txt
+!pasgan/DIRECTORY_TREE.txt
+
+# Password Lists
+rockyou.txt
+rockyou-*.txt
+linkedin.txt
+passwords.txt
+generated_passwords.txt
+wordlist*.txt
+
+# Model Checkpoints (Large Files)
+pasgan/checkpoints/
+checkpoints/
+*.pth
+*.pt
+models/
+
+# TensorBoard Logs
+logs/
+runs/
+pasgan/logs/
+
+# Output Files
+crack_results*.json
+results/
+output/
+
+# Temporary Files
+*.tmp
+*.temp
+*.log
+*.cache
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Compressed Files (if large)
+*.zip
+*.tar.gz
+*.rar
+!Level1.zip
+!Level2.zip
