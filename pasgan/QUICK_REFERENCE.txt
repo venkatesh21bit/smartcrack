@@ -1,0 +1,213 @@
+╔══════════════════════════════════════════════════════════════════╗
+║                    PASGAN QUICK REFERENCE                        ║
+║              Password Cracker with 12+ Char Constraint           ║
+╚══════════════════════════════════════════════════════════════════╝
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ 🚀 QUICK START (3 COMMANDS)                                     ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+1. Install:
+   python pasgan\install.py
+
+2. Run Complete Pipeline:
+   python pasgan\main.py --all --targets Level1\Level1\Level1 Level2\Level2
+
+3. Check Results:
+   crack_results_*.json
+
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ 📋 COMMAND REFERENCE                                             ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+Complete Pipeline:
+  python pasgan\main.py --all --targets Level1\Level1\Level1 Level2\Level2
+
+Train Only:
+  python pasgan\main.py --train --epochs 100
+
+Generate Only:
+  python pasgan\main.py --generate --num-passwords 10000
+
+Crack Only:
+  python pasgan\main.py --crack --targets Level1\Level1\Level1
+
+Windows Batch:
+  pasgan\run.bat
+
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ 🎯 KEY FEATURES                                                  ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+✓ GAN-based password generation
+✓ 12+ character minimum (as required)
+✓ Cracks PDF, DOCX, PPTX, ZIP files
+✓ Targets 40 files in Level1 & Level2
+✓ Multi-threaded processing
+✓ Diverse password patterns
+
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ 📁 PROJECT STRUCTURE                                             ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+pasgan/
+├── model.py             - GAN architecture
+├── dataset.py           - Password data handling
+├── train.py             - Training script
+├── generate.py          - Password generation
+├── cracker.py           - File cracking
+├── main.py              - Main orchestration
+├── install.py           - Installation
+├── run.bat              - Windows batch
+├── requirements.txt     - Dependencies
+└── *.md                 - Documentation
+
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ ⚙️ CONFIGURATION                                                 ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+Parameter              Default    Description
+─────────────────────  ─────────  ──────────────────────────
+--epochs               100        Training iterations
+--num-passwords        10000      Passwords to generate
+--min-length           12         Minimum password length
+--workers              4          Parallel threads
+--checkpoint           (auto)     Model checkpoint path
+
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ 🎓 COMMON TASKS                                                  ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+Quick Test (10 min):
+  python pasgan\main.py --train --epochs 10
+  python pasgan\main.py --generate --num-passwords 1000
+  python pasgan\main.py --crack --targets Level1\Level1\Level1
+
+Production Run (60-90 min):
+  python pasgan\main.py --all --epochs 200 --num-passwords 50000 \
+                        --targets Level1\Level1\Level1 Level2\Level2
+
+Crack Single File:
+  python pasgan\cracker.py --target "path\to\file.pdf" \
+                           --passwords pasgan\generated_passwords.txt
+
+Monitor Training:
+  tensorboard --logdir pasgan\checkpoints\logs
+
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ 📊 TARGET FILES                                                  ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+Level1 (Level1\Level1\Level1\):
+  • 20 files: GC_PS7_S1_L1-1.docx → L1-20.pdf
+  • Formats: DOCX, PDF
+
+Level2 (Level2\Level2\):
+  • 20 files: GC_PS7_S1_L2-1.docx → L2-20.pdf
+  • Formats: DOCX, PPTX, PDF
+
+Total: 40 password-protected files
+
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ ⏱️ EXPECTED TIMELINE                                             ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+Installation:         2-5 minutes
+Training (100 ep):    10-60 minutes
+Generation (10k):     30-120 seconds
+Cracking (40 files):  Variable
+─────────────────────────────────────
+Total (Complete):     30-90 minutes
+
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ 🔧 TROUBLESHOOTING                                               ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+Problem: Import errors
+Solution: pip install torch numpy pikepdf msoffcrypto-tool
+
+Problem: CUDA not available
+Solution: Automatic CPU fallback (slower but works)
+
+Problem: Out of memory
+Solution: Reduce batch_size in config (e.g., 32)
+
+Problem: No passwords found
+Solution: Train longer (--epochs 200) or generate more
+
+Problem: Slow cracking
+Solution: Increase --workers (e.g., --workers 8)
+
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ 📚 DOCUMENTATION                                                 ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+PROJECT_SUMMARY.md   - Complete project overview
+GETTING_STARTED.md   - Quick start guide
+README.md            - Full documentation
+ARCHITECTURE.txt     - System architecture
+examples.py          - Usage examples
+
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ 📤 OUTPUT FILES                                                  ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+pasgan\checkpoints\final_model.pth     - Trained model
+pasgan\generated_passwords.txt         - Password list
+crack_results_YYYYMMDD_HHMMSS.json     - Cracking results
+pasgan\checkpoints\logs\               - TensorBoard logs
+
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ ✅ SUCCESS INDICATORS                                            ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+Training:
+  ✓ G loss decreasing
+  ✓ D loss ~0.6-0.7
+  ✓ Realistic sample passwords
+
+Generation:
+  ✓ All passwords ≥ 12 chars
+  ✓ High uniqueness (>95%)
+  ✓ Diverse patterns
+
+Cracking:
+  ✓ Progress bars visible
+  ✓ Success messages appear
+  ✓ Results saved to JSON
+
+
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ 🎯 PASSWORD SPECS                                                ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+Length:        12-16 characters (minimum 12)
+Characters:    95 printable ASCII
+  • Letters:   a-z, A-Z (52)
+  • Digits:    0-9 (10)
+  • Special:   !@#$%^&*()_+-= etc. (33)
+
+Examples:
+  Password1234!
+  Admin@123456789
+  Welcome2024#$%
+  P@ssw0rdSecure1
+
+
+╔══════════════════════════════════════════════════════════════════╗
+║                     🎉 YOU'RE ALL SET!                           ║
+║                                                                  ║
+║  Run: python pasgan\main.py --all --targets Level1\Level1\Level1║
+║                                           Level2\Level2          ║
+╚══════════════════════════════════════════════════════════════════╝

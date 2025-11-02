@@ -1,0 +1,12 @@
+# PassGAN Requirements
+# PyTorch and dependencies
+torch>=2.0.0
+numpy>=1.24.0
+tensorboard>=2.14.0
+
+# File cracking dependencies
+pikepdf>=8.0.0
+msoffcrypto-tool>=5.0.0
+
+# General utilities
+tqdm>=4.65.0

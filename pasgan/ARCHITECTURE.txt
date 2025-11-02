@@ -1,0 +1,297 @@
+"""
+PassGAN System Architecture Overview
+=====================================
+
+╔══════════════════════════════════════════════════════════════════╗
+║                     PASGAN PASSWORD CRACKER                      ║
+║              GAN-Based Password Generation System                ║
+╚══════════════════════════════════════════════════════════════════╝
+
+┌─────────────────────────────────────────────────────────────────┐
+│                        SYSTEM COMPONENTS                         │
+└─────────────────────────────────────────────────────────────────┘
+
+1. MODEL (model.py)
+   ├─ Generator
+   │  └─ Input: Random noise (128-dim)
+   │  └─ Process: FC → LSTM (3 layers) → FC
+   │  └─ Output: Password (12-16 chars)
+   │
+   └─ Discriminator
+      └─ Input: Password sequence
+      └─ Process: Embedding → CNN → BiLSTM → FC
+      └─ Output: Real/Fake probability
+
+2. TRAINING (train.py)
+   ├─ Load/Generate training data
+   ├─ Train Discriminator (identify real passwords)
+   ├─ Train Generator (fool Discriminator)
+   ├─ Save checkpoints every 10 epochs
+   └─ Output: Trained model
+
+3. GENERATION (generate.py)
+   ├─ Load trained model
+   ├─ Generate noise vectors
+   ├─ Create passwords via Generator
+   ├─ Filter by length (12+ chars)
+   └─ Output: Password list (10,000+)
+
+4. CRACKING (cracker.py)
+   ├─ Load password list
+   ├─ Detect file type (PDF/DOCX/PPTX/ZIP)
+   ├─ Try each password (multi-threaded)
+   ├─ Track successes/failures
+   └─ Output: Cracking results (JSON)
+
+5. ORCHESTRATION (main.py)
+   └─ Coordinates: Train → Generate → Crack
+
+
+┌─────────────────────────────────────────────────────────────────┐
+│                         WORKFLOW DIAGRAM                         │
+└─────────────────────────────────────────────────────────────────┘
+
+    [Start]
+       │
+       ▼
+┌──────────────┐
+│   Training   │ ◄─── Password Dataset
+│   (train.py) │      (synthetic or real)
+└──────┬───────┘
+       │ produces
+       ▼
+┌──────────────┐
+│ Trained Model│
+│  (checkpoint)│
+└──────┬───────┘
+       │ used by
+       ▼
+┌──────────────┐
+│  Generation  │
+│(generate.py) │
+└──────┬───────┘
+       │ produces
+       ▼
+┌──────────────┐
+│Password List │ ───────┐
+│  (10k+ pwds) │        │
+└──────────────┘        │
+                        │ used by
+                        ▼
+              ┌─────────────────┐
+              │    Cracking     │
+              │  (cracker.py)   │
+              └────────┬────────┘
+                       │
+       ┌───────────────┼───────────────┐
+       ▼               ▼               ▼
+   [Level1]        [Level2]        [Results]
+   20 files        20 files         (JSON)
+
+
+┌─────────────────────────────────────────────────────────────────┐
+│                         DATA FLOW                                │
+└─────────────────────────────────────────────────────────────────┘
+
+Noise Vector (128-dim)
+    │
+    ▼
+┌─────────────────┐
+│   Generator     │
+│  (Deep Neural   │
+│    Network)     │
+└────────┬────────┘
+         │
+         ▼
+   Password Logits (16 x 95)
+         │
+         ▼
+   Softmax → Sample
+         │
+         ▼
+   Password Indices (16)
+         │
+         ▼
+   Decode to String
+         │
+         ▼
+   "P@ssw0rd123456"
+         │
+         ▼
+   Try on Protected File
+         │
+    ┌────┴────┐
+    ▼         ▼
+SUCCESS    FAILURE
+    │         │
+    ▼         ▼
+  SAVE     TRY NEXT
+
+
+┌─────────────────────────────────────────────────────────────────┐
+│                      TECHNICAL DETAILS                           │
+└─────────────────────────────────────────────────────────────────┘
+
+Generator Architecture:
+  • Input: Latent vector z ∈ R^128
+  • FC Layer: 128 → 256 (+ BatchNorm + LeakyReLU)
+  • Reshape: (batch, 256) → (batch, 16, 256)
+  • LSTM1: 256 → 512 (+ Dropout 0.3)
+  • LSTM2: 512 → 512 (+ Dropout 0.3)
+  • LSTM3: 512 → 256 (+ Dropout 0.3)
+  • FC Output: 256 → 95 (vocab size)
+  • Output: (batch, 16, 95) logits
+
+Discriminator Architecture:
+  • Input: Password indices (batch, 16)
+  • Embedding: 16 → (16, 128)
+  • Conv1D: 128 → 256 (kernel=3, + BatchNorm + LeakyReLU)
+  • Conv1D: 256 → 512 (kernel=3, + BatchNorm + LeakyReLU)
+  • Conv1D: 512 → 512 (kernel=3, + BatchNorm + LeakyReLU)
+  • BiLSTM: 512 → 256 (bidirectional → 512)
+  • FC: 512 → 256 (+ LeakyReLU + Dropout)
+  • FC: 256 → 1 (real/fake score)
+
+Training Loop:
+  For each epoch:
+    For each batch:
+      1. Train Discriminator (3 steps):
+         - Get real passwords from dataset
+         - Generate fake passwords
+         - Compute loss: BCE(D(real), 1) + BCE(D(fake), 0)
+         - Update D parameters
+      
+      2. Train Generator (1 step):
+         - Generate fake passwords
+         - Compute loss: BCE(D(fake), 1)  [fool discriminator]
+         - Update G parameters
+
+Loss Function:
+  Binary Cross-Entropy with Logits:
+    L = -[y·log(σ(x)) + (1-y)·log(1-σ(x))]
+
+
+┌─────────────────────────────────────────────────────────────────┐
+│                      PASSWORD CONSTRAINTS                        │
+└─────────────────────────────────────────────────────────────────┘
+
+✓ Minimum Length: 12 characters
+✓ Maximum Length: 16 characters
+✓ Character Set: 95 printable ASCII characters
+  - Letters: a-z, A-Z (52)
+  - Digits: 0-9 (10)
+  - Special: !@#$%^&*()_+-=[]{}|;:,.<>? etc. (33)
+✓ Diversity: Multiple temperature sampling
+✓ Patterns: Can enforce uppercase, lowercase, digits, special
+
+
+┌─────────────────────────────────────────────────────────────────┐
+│                      FILE SUPPORT                                │
+└─────────────────────────────────────────────────────────────────┘
+
+Supported Formats:
+  📄 PDF     (.pdf)   - via pikepdf
+  📝 Word    (.docx)  - via msoffcrypto-tool
+  📊 PowerPt (.pptx)  - via msoffcrypto-tool
+  📦 ZIP     (.zip)   - via zipfile (built-in)
+
+Target Files:
+  Level1: 20 files (DOCX + PDF)
+  Level2: 20 files (DOCX + PPTX + PDF)
+  Total: 40 password-protected files
+
+
+┌─────────────────────────────────────────────────────────────────┐
+│                      PERFORMANCE METRICS                         │
+└─────────────────────────────────────────────────────────────────┘
+
+Training:
+  • GPU: ~10-30 minutes (100 epochs)
+  • CPU: ~30-60 minutes (100 epochs)
+  • Memory: ~2-4 GB RAM
+
+Generation:
+  • 10,000 passwords: ~30-60 seconds
+  • 50,000 passwords: ~2-5 minutes
+  • Unique filtering: automatic
+
+Cracking:
+  • Speed: ~100-1000 passwords/second (depends on file type)
+  • Parallelization: 4 workers (configurable)
+  • Success rate: Depends on password complexity
+
+
+┌─────────────────────────────────────────────────────────────────┐
+│                      USAGE COMMANDS                              │
+└─────────────────────────────────────────────────────────────────┘
+
+Quick Start:
+  python pasgan\main.py --all --targets Level1\Level1\Level1 Level2\Level2
+
+Individual Steps:
+  python pasgan\main.py --train --epochs 100
+  python pasgan\main.py --generate --num-passwords 10000
+  python pasgan\main.py --crack --targets Level1\Level1\Level1
+
+Windows Batch:
+  pasgan\run.bat
+
+Python API:
+  from pasgan import PasswordGenerator, FileCracker
+  generator = PasswordGenerator('checkpoint.pth')
+  passwords = generator.generate(1000, min_length=12)
+
+
+┌─────────────────────────────────────────────────────────────────┐
+│                      OUTPUT FILES                                │
+└─────────────────────────────────────────────────────────────────┘
+
+pasgan/
+├── checkpoints/
+│   ├── config.json              (training configuration)
+│   ├── checkpoint_epoch_10.pth  (intermediate checkpoint)
+│   ├── checkpoint_epoch_20.pth
+│   ├── ...
+│   ├── final_model.pth          (final trained model)
+│   └── logs/                    (TensorBoard logs)
+│
+├── generated_passwords.txt      (10,000+ passwords)
+│
+└── crack_results_*.json         (cracking results)
+
+
+┌─────────────────────────────────────────────────────────────────┐
+│                      SUCCESS INDICATORS                          │
+└─────────────────────────────────────────────────────────────────┘
+
+During Training:
+  ✓ Generator loss decreasing
+  ✓ Discriminator loss stabilizing around 0.6-0.7
+  ✓ Sample passwords look realistic
+  ✓ Increasing password diversity
+
+During Generation:
+  ✓ All passwords ≥ 12 characters
+  ✓ High uniqueness rate (>95%)
+  ✓ Diverse patterns and characters
+  ✓ No repeated sequences
+
+During Cracking:
+  ✓ Progress bars showing attempts
+  ✓ Success messages for cracked files
+  ✓ Results saved to JSON
+  ✓ Summary statistics displayed
+
+
+═══════════════════════════════════════════════════════════════════
+                    SYSTEM READY TO USE!
+═══════════════════════════════════════════════════════════════════
+
+Next Steps:
+1. Install: pip install -r pasgan\requirements.txt
+2. Run: python pasgan\main.py --all --targets Level1\Level1\Level1 Level2\Level2
+3. Wait: ~30-90 minutes for complete pipeline
+4. Check: crack_results_*.json for successful passwords
+
+Good luck! 🚀
+"""

@@ -1,0 +1,288 @@
+PassGAN Password Cracker - Complete Directory Structure
+========================================================
+
+c:\Users\91902\Documents\smartcrack\
+│
+├── Level1/
+│   ├── Level1/
+│   │   └── Level1/
+│   │       ├── GC_PS7_S1_L1-1.docx    ◄── Target files
+│   │       ├── GC_PS7_S1_L1-2.docx
+│   │       ├── ...
+│   │       └── GC_PS7_S1_L1-20.pdf
+│   │
+│   └── Level1.zip
+│
+├── Level2/
+│   ├── Level2/
+│   │   ├── GC_PS7_S1_L2-1.docx        ◄── Target files
+│   │   ├── GC_PS7_S1_L2-2.docx
+│   │   ├── ...
+│   │   └── GC_PS7_S1_L2-20.pdf
+│   │
+│   └── Level2.zip
+│
+└── pasgan/  ◄◄◄ NEW FOLDER CREATED ◄◄◄
+    │
+    ├── Core Scripts
+    │   ├── model.py                    # GAN architecture (Generator + Discriminator)
+    │   ├── dataset.py                  # Password dataset handler & loader
+    │   ├── train.py                    # Model training script
+    │   ├── generate.py                 # Password generation script
+    │   ├── cracker.py                  # File cracking utility
+    │   └── main.py                     # Main orchestration script
+    │
+    ├── User Interface
+    │   ├── run.py                      # Quick start Python script
+    │   ├── run.bat                     # Windows batch script
+    │   ├── install.py                  # Installation & verification
+    │   └── examples.py                 # Usage examples
+    │
+    ├── Documentation
+    │   ├── PROJECT_SUMMARY.md          # Complete project overview ★
+    │   ├── GETTING_STARTED.md          # Quick start guide ★
+    │   ├── README.md                   # Full documentation ★
+    │   ├── ARCHITECTURE.txt            # System architecture diagram
+    │   ├── QUICK_REFERENCE.txt         # Command reference card
+    │   └── DIRECTORY_TREE.txt          # This file
+    │
+    ├── Configuration
+    │   ├── requirements.txt            # Python dependencies
+    │   └── __init__.py                 # Package initialization
+    │
+    └── Output (Created during execution)
+        ├── checkpoints/                # Generated after training
+        │   ├── config.json             # Training configuration
+        │   ├── checkpoint_epoch_10.pth # Intermediate checkpoints
+        │   ├── checkpoint_epoch_20.pth
+        │   ├── ...
+        │   ├── final_model.pth         # Final trained model
+        │   └── logs/                   # TensorBoard logs
+        │
+        ├── generated_passwords.txt     # Generated after password generation
+        │
+        └── crack_results_*.json        # Generated after cracking
+
+
+File Count by Category
+======================
+
+Core Scripts:        6 files
+User Interface:      4 files
+Documentation:       6 files
+Configuration:       2 files
+─────────────────────────────
+Total Files:        18 files
+
+
+File Sizes (Approximate)
+========================
+
+model.py             ~6 KB   (Generator + Discriminator)
+dataset.py           ~8 KB   (Dataset handling)
+train.py            ~12 KB   (Training loop)
+generate.py          ~9 KB   (Password generation)
+cracker.py          ~10 KB   (File cracking)
+main.py             ~10 KB   (Orchestration)
+install.py           ~6 KB   (Installation)
+run.py               ~1 KB   (Quick start)
+run.bat              ~2 KB   (Windows batch)
+examples.py          ~7 KB   (Usage examples)
+README.md           ~10 KB   (Full docs)
+GETTING_STARTED.md   ~6 KB   (Quick start guide)
+PROJECT_SUMMARY.md   ~8 KB   (Overview)
+ARCHITECTURE.txt     ~6 KB   (System diagram)
+QUICK_REFERENCE.txt  ~4 KB   (Command reference)
+requirements.txt    <1 KB   (Dependencies)
+__init__.py         <1 KB   (Package init)
+
+
+Key Features by File
+====================
+
+model.py:
+  • Generator network (LSTM-based)
+  • Discriminator network (CNN + BiLSTM)
+  • Weight initialization
+  • 12+ character constraint enforcement
+
+dataset.py:
+  • Password dataset class
+  • Synthetic data generation
+  • Character encoding/decoding
+  • Data augmentation
+  • 12+ character filtering
+
+train.py:
+  • Complete training loop
+  • Adversarial training
+  • Checkpoint saving
+  • TensorBoard logging
+  • Sample generation
+
+generate.py:
+  • Password generator class
+  • Temperature-based sampling
+  • Pattern-based generation
+  • Batch generation
+  • Diversity controls
+
+cracker.py:
+  • Multi-format support (PDF, DOCX, PPTX, ZIP)
+  • Multi-threaded cracking
+  • Progress tracking
+  • Result statistics
+  • JSON export
+
+main.py:
+  • Complete pipeline orchestration
+  • Dependency checking
+  • Step-by-step execution
+  • Error handling
+  • Result reporting
+
+
+Usage Flow
+==========
+
+1. Install:          python pasgan\install.py
+                     └─> Checks dependencies
+                     └─> Installs requirements
+                     └─> Verifies installation
+
+2. Complete Run:     python pasgan\main.py --all --targets ...
+                     └─> Trains model      (30-60 min)
+                     └─> Generates pwds    (1-2 min)
+                     └─> Cracks files      (variable)
+                     └─> Saves results     (instant)
+
+3. Check Results:    crack_results_*.json
+                     └─> Success/failure stats
+                     └─> Found passwords
+                     └─> Timing information
+
+
+Target Structure
+================
+
+Level1\Level1\Level1\
+├── GC_PS7_S1_L1-1.docx     ◄── Password protected
+├── GC_PS7_S1_L1-2.docx     ◄── Password protected
+├── GC_PS7_S1_L1-3.docx     ◄── Password protected
+├── ...                     ◄── (17 more files)
+└── GC_PS7_S1_L1-20.pdf     ◄── Password protected
+
+Level2\Level2\
+├── GC_PS7_S1_L2-1.docx     ◄── Password protected
+├── GC_PS7_S1_L2-2.docx     ◄── Password protected
+├── GC_PS7_S1_L2-10.pptx    ◄── Password protected
+├── ...                     ◄── (17 more files)
+└── GC_PS7_S1_L2-20.pdf     ◄── Password protected
+
+Total Target Files: 40
+
+
+Generated Output Structure (After Running)
+===========================================
+
+pasgan\
+├── checkpoints\
+│   ├── config.json                    (~1 KB)
+│   ├── checkpoint_epoch_10.pth        (~20 MB)
+│   ├── checkpoint_epoch_20.pth        (~20 MB)
+│   ├── ...
+│   ├── final_model.pth                (~20 MB)
+│   └── logs\
+│       └── (TensorBoard files)        (~5-10 MB)
+│
+├── generated_passwords.txt            (~200 KB for 10k passwords)
+│
+└── crack_results_TIMESTAMP.json       (~10-50 KB)
+
+
+Dependencies Installed
+======================
+
+torch (PyTorch)          ~1.5 GB    Deep learning framework
+numpy                    ~50 MB     Numerical computing
+tensorboard              ~30 MB     Training visualization
+pikepdf                  ~10 MB     PDF password cracking
+msoffcrypto-tool         ~5 MB      Office file cracking
+tqdm                     ~1 MB      Progress bars
+────────────────────────────────
+Total:                   ~1.6 GB
+
+
+System Requirements
+===================
+
+✓ Python 3.8+
+✓ Windows 10/11
+✓ 4 GB RAM (8 GB recommended)
+✓ 2 GB free disk space
+✓ Internet connection (for installation)
+✓ Optional: CUDA GPU (for faster training)
+
+
+Quick Start Commands
+====================
+
+# Install everything
+python pasgan\install.py
+
+# Run complete pipeline (one command)
+python pasgan\main.py --all --targets Level1\Level1\Level1 Level2\Level2
+
+# Or use Windows batch
+pasgan\run.bat
+
+
+Documentation Priority
+======================
+
+★★★ START HERE ★★★
+1. PROJECT_SUMMARY.md     - Read this first!
+2. GETTING_STARTED.md     - How to get started
+3. QUICK_REFERENCE.txt    - Command cheat sheet
+
+★★ FOR MORE DETAILS ★★
+4. README.md              - Complete documentation
+5. ARCHITECTURE.txt       - System architecture
+
+★ ADVANCED ★
+6. examples.py            - Code examples
+7. Individual .py files   - Source code
+
+
+Success Checklist
+=================
+
+Installation:
+  ☐ Python 3.8+ installed
+  ☐ Dependencies installed (pip install -r requirements.txt)
+  ☐ No import errors
+
+Training:
+  ☐ Model trains without errors
+  ☐ Checkpoints saved
+  ☐ Sample passwords look realistic
+
+Generation:
+  ☐ Passwords generated
+  ☐ All passwords ≥ 12 characters
+  ☐ File saved: generated_passwords.txt
+
+Cracking:
+  ☐ Files processed
+  ☐ Results saved to JSON
+  ☐ Some passwords found (hopefully!)
+
+
+═══════════════════════════════════════════════════════════
+                    READY TO USE! 🚀
+═══════════════════════════════════════════════════════════
+
+Next Step: python pasgan\install.py
+Then Run:  python pasgan\main.py --all --targets Level1\Level1\Level1 Level2\Level2
+
+Good luck with your password cracking! 🎯
