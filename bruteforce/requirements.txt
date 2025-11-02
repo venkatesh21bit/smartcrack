@@ -1,0 +1,15 @@
+# Password Cracker Requirements
+
+# PDF support
+pikepdf>=8.0.0
+
+# Office file support
+msoffcrypto-tool>=5.0.0
+
+# Standard library modules (included with Python)
+# - zipfile
+# - itertools
+# - multiprocessing
+# - concurrent.futures
+# - pathlib
+# - json
